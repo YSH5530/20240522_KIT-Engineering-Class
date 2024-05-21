@@ -1,12 +1,10 @@
-int PulseSensorPurplePin = 0;
-int Signal;
-float Pre_Filtered_Signal;
-float Filtered_Signal;
-float Pre_Signal = 0;
+#include <filter_lib.h>
 
-const float a2 = 0.7265;
-const float b1 = 0.1367;
-const float b2 = 0.1367;
+lowpass_filter lowpassFilter(15);
+
+float PulseSensorPurplePin = 0;
+float Signal;
+float Filtered_Signal;
 
 void setup() {
   Serial.begin(9600);
@@ -14,10 +12,8 @@ void setup() {
 
 void loop() {
   Signal = analogRead(PulseSensorPurplePin);
-  Pre_Filtered_Signal = Filtered_Signal;
-  Pre_Signal = Signal;
   
-  Filtered_Signal = a2 * Pre_Filtered_Signal + b1 * Signal + b2 * Pre_Signal;
+  Filtered_Signal = lowpassFilter.filter(Signal);
   
   Serial.print(Signal);
   Serial.print(" ");
