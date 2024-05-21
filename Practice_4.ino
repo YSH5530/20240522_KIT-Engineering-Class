@@ -1,21 +1,18 @@
+#include <filter_lib.h>
 #define ts 0.001 * 0.001
 
+lowpass_filter lowpassFilter(10);
+
 float PulseSensorPurplePin = 0;
+float Signal;
+float Pre_Signal = 0;
+float diff_Signal = 0;
+float Filtered_diff_Signal;
+
 unsigned long tCount = 0;
 unsigned long tCountPre = 0;
-
-float Signal = 0;
-float diff_Signal = 0;
 float dt = 0;
-
-float Pre_Filtered_Signal;
-float Filtered_Signal;
-float Pre_Signal = 0;
 float Pre_diff = 0;
-
-const float a2 = 0.7265;
-const float b1 = 0.1367;
-const float b2 = 0.1367;
 
 void setting() {
   tCount = micros();
@@ -37,18 +34,15 @@ void getData() {
   saveStates();
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
   getData();
-  Pre_Filtered_Signal = Filtered_Signal;
-  Pre_diff = diff_Signal;
-  
-  Filtered_Signal = a2 * Pre_Filtered_Signal + b1 * diff_Signal + b2 * Pre_diff;
+  Filtered_diff_Signal = lowpassFilter.filter(diff_Signal);
+
   Serial.print(Signal);
   Serial.print(" ");
-  Serial.println(Filtered_Signal);
+  Serial.println(Filtered_diff_Signal);
 }
