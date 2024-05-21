@@ -12,7 +12,6 @@ float Filtered_diff_Signal;
 unsigned long tCount = 0;
 unsigned long tCountPre = 0;
 float dt = 0;
-float Pre_diff = 0;
 
 void setting() {
   tCount = micros();
