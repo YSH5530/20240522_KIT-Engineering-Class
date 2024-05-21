@@ -1,6 +1,6 @@
 #include <filter_lib.h>
 
-lowpass_filter lowpassFilter(15);
+lowpass_filter lowpassFilter(10);
 
 float PulseSensorPurplePin = 0;
 float Signal;
